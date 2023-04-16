@@ -1,8 +1,8 @@
 # Description
-# ![ChRIS logo](https://raw.githubusercontent.com/FNNDSC/ChRIS_ultron_backEnd/master/docs/assets/logo_chris.png) chris in a box
+# ![ChRIS logo](https://raw.githubusercontent.com/FNNDSC/ChRIS_ultron_backEnd/master/docs/assets/logo_chris.png) Chris in a box
 
-[![CI badge](https://github.com/FNNDSC/chris in a box/workflows/CI/badge.svg)](https://github.com/FNNDSC/chris in a box/actions?query=workflow%3ACI)
-[![MIT license](https://img.shields.io/github/license/FNNDSC/chris in a box)](LICENSE)
+
+[![MIT license](https://img.shields.io/github/license/FNNDSC/chris-in-a-box)](LICENSE)
 
 Run [_ChRIS_](https://chrisproject.org/) using [Podman](https://podman.io).
 

@@ -57,14 +57,13 @@ running anything which might interfere with _miniChRIS_.
 - Running servers might clash with _miniChRIS_, which wants to bind TCP ports
   5005, 5010, 8000, 8010, 8080, 8020, and 8021.
 
-## Podman: Quick Start
+## Podman : Install ChRIS
 
 ```bash
 ./podman/minichris.sh up
 ```
 
-## Podman: Tear Down
-
+## Podman: Uninstall ChRIS
 ```bash
 ./podman/minichris.sh down
 ```
@@ -77,16 +76,24 @@ Subsequent runs will be faster, about 40 seconds.
 
 ## MicroShift
 
-WIP
+Work in Progress
 
-## Next Steps
+<!--
+## ChRIS URLs
 
-A default superuser `chris:chris1234` is created.
-You can access the admin dashboard at
-http://localhost:8000/chris-admin/.
+website        | URL
+---------------|-----
+ChRIS_ui       | http://localhost:8020/
+ChRIS admin    | http://localhost:8000/chris-admin/
+ChRIS_store_ui | http://localhost:8021/
+Orthanc        | http://localhost:8042/
+-->
 
-Head over to https://github.com/FNNDSC/ChRIS_ui#readme
-for how to run the user interface.
+<!--
+
+## Note
+
+For more information on how to run the user interface, please refer to https://github.com/FNNDSC/ChRIS_ui#readme
 
 ### Adding Plugins
 
@@ -101,19 +108,7 @@ and then run
 podman/minichris.sh chrisomatic
 ```
 
-<!--
-## ChRIS URLs
-
-website        | URL
----------------|-----
-ChRIS_ui       | http://localhost:8020/
-ChRIS admin    | http://localhost:8000/chris-admin/
-ChRIS_store_ui | http://localhost:8021/
-Orthanc        | http://localhost:8042/
--->
-
-<!--
-### Add Plugins to CUBE
+### Adding Plugins to CUBE
 
 Plugins are added to _ChRIS_ via the Django admin dashboard.
 
@@ -156,9 +151,9 @@ YAML files in `podman/kube` should be interoperable between Podman and Kubernete
 Podman supports a subset of the Kubernetes manifest spec:
 Pod, Deployment, PersistentVolumeClaim, ConfigMap
 
-Ideally, to add _pfcon_ to _CUBE_ we should be using the pod name of pfcon
-`http://minichris-pfcon:5005/api/v1/`but it won't work.
-See https://github.com/FNNDSC/ChRIS_ultron_backEnd/issues/505
+## Open Issues
+Ideally, to add _pfcon_ to _CUBE_ we should be using the pod name of pfcon `http://minichris-pfcon:5005/api/v1/`but it won't work.
+For more information please go to https://github.com/FNNDSC/ChRIS_ultron_backEnd/issues/505
 
 There is an undocumented behavior of Podman where the host is visible to the container
 via the name `host.containers.internal`, and we're able to talk to pfcon via the bound

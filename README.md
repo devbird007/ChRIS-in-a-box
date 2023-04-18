@@ -68,7 +68,7 @@ running anything which might interfere with _miniChRIS_.
 ./podman/minichris.sh down
 ```
 
-## What to expect: performance
+## Application Startup & Performance
 
 On a fast computer with good internet speed, running `./podman/minichris.sh up`
 for the first time (pulls images) takes about 1.5 to 2 minutes.

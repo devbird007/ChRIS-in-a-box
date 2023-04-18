@@ -9,7 +9,7 @@ Run [_ChRIS_](https://chrisproject.org/) using [Podman](https://podman.io).
 
 ## Project Goals
 
-Chris in a box is intended to run Chris on RHDE
+Chris in a box is intended to run Chris as containers using Podman and Microshift depending on the choice of deployment. 
 
 The folder _podman_ provides YAML files which can be read by `podman play kube` to run _ChRIS_.
 

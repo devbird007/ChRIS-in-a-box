@@ -21,6 +21,10 @@ To use a specific backend service please refer to the project source repositorie
 Image tags are pinned to stable versions, so _chris in a box_ may be out-of-date with development versions of _ChRIS_ components.
 
 
+
+
+## Prerequisties
+
 ### System Requirements
 
 _ChRIS in a box_ requires Podman version 4.3 or above.
@@ -43,8 +47,6 @@ sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
 ```
 
 </details>
-
-## Prerequisties
 
 Whether you're using Podman or Kubernetes, make sure your system is mostly not
 running anything which might interfere with _miniChRIS_.

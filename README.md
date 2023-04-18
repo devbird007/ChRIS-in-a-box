@@ -7,22 +7,19 @@ Chris in a Box allows the ability to access and use ChRIS on edge computing devi
 
 Run [_ChRIS_](https://chrisproject.org/) using [Podman](https://podman.io).
 
-## Project Goals
+## Technical Overview
 
 Chris in a box is intended to run Chris as containers using Podman and Microshift depending on the choice of deployment. 
 
 The folder _podman_ provides YAML files which can be read by `podman play kube` to run _ChRIS_.
 
-
-At the moment it is insecure and not be used in production. However, we aim for make changes so that it can run in production
-This is a good starting point for writing production-ready configurations of _ChRIS_.
+At the moment it is insecure and not be used in production. However, we aim for make changes so that it can run in production. This is a good starting point for writing production-ready configurations of _ChRIS_.
 
 _Chris in a box_ runs applications in "production mode" (where applicable)
 To use a specific backend service please refer to the project source repositories instead, e.g. https://github.com/FNNDSC/ChRIS_ultron_backEnd
 
 Image tags are pinned to stable versions, so _chris in a box_ may be out-of-date with development versions of _ChRIS_ components.
 
-See also: https://github.com/FNNDSC/miniChRIS-docker
 
 ### System Requirements
 
@@ -47,7 +44,7 @@ sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
 
 </details>
 
-## Preconditions
+## Prerequisties
 
 Whether you're using Podman or Kubernetes, make sure your system is mostly not
 running anything which might interfere with _miniChRIS_.
@@ -57,13 +54,13 @@ running anything which might interfere with _miniChRIS_.
 - Running servers might clash with _miniChRIS_, which wants to bind TCP ports
   5005, 5010, 8000, 8010, 8080, 8020, and 8021.
 
-## Podman : Install ChRIS
+## Podman - Install ChRIS
 
 ```bash
 ./podman/minichris.sh up
 ```
 
-## Podman: Uninstall ChRIS
+## Podman - Uninstall ChRIS
 ```bash
 ./podman/minichris.sh down
 ```
@@ -166,10 +163,6 @@ host port.
 - https://github.com/FNNDSC/chris-in-a-box/wiki/
 
 ## Contact
-
+- Contributors: Raghuram.Banda , Máirín Duffy.
 - Github Issues: https://github.com/FNNDSC/chris-in-a-box/issues
 - Matrix: https://matrix.to/#/#chris-general:fedora.im
-
-
-
-

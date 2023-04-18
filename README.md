@@ -1,7 +1,7 @@
 # Description
 # ![ChRIS logo](https://raw.githubusercontent.com/FNNDSC/ChRIS_ultron_backEnd/master/docs/assets/logo_chris.png) Chris in a box
 
-Chris in a Box allows the ability to access and use ChRIS on Edge Computing Devices that are deployed in facilities who would like to leverage the capabilities of ChRIS. 
+ChRIS in a Box allows the ability to access and use ChRIS on Edge Computing Devices that are deployed in facilities who would like to leverage the capabilities of ChRIS. 
 
 [![MIT license](https://img.shields.io/github/license/FNNDSC/chris-in-a-box)](LICENSE)
 
@@ -9,13 +9,13 @@ Run [_ChRIS_](https://chrisproject.org/) using [Podman](https://podman.io).
 
 ## Technical Overview
 
-Chris in a box is intended to run Chris as containers using Podman and Microshift depending on the choice of deployment. 
+ChRIS in a box is intended to run the components of ChRIS application as containers using Podman and Microshift depending on the choice of deployment. 
 
 The folder _podman_ provides YAML files which can be read by `podman play kube` to run _ChRIS_.
 
 At the moment it is insecure and not be used in production. However, we aim for make changes so that it can run in production. This is a good starting point for writing production-ready configurations of _ChRIS_.
 
-_Chris in a box_ runs applications in "production mode" (where applicable)
+_ChRIS in a box_ runs applications in "production mode" (where applicable)
 To use a specific backend service please refer to the project source repositories instead, e.g. https://github.com/FNNDSC/ChRIS_ultron_backEnd
 
 Image tags are pinned to stable versions, so _chris in a box_ may be out-of-date with development versions of _ChRIS_ components.
@@ -23,7 +23,7 @@ Image tags are pinned to stable versions, so _chris in a box_ may be out-of-date
 
 ### System Requirements
 
-_chris in a box_ requires Podman version 4.3 or above.
+_ChRIS in a box_ requires Podman version 4.3 or above.
 We aim to support "out-of-the-box" setups of rootless Podman (using slirp4netns).
 
 Supported OS: Fedora Silverblue 37, Ubuntu 22.04, Arch Linux

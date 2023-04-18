@@ -65,6 +65,17 @@ running anything which might interfere with _miniChRIS_.
 ./podman/minichris.sh down
 ```
 
+
+## Podman Desktop - Install ChRIS
+
+![Screenshot from 2023-04-15 22-42-25](https://user-images.githubusercontent.com/93591339/232263354-172f5288-b5e5-483d-9d4e-817b88f4c95d.png)
+![Screenshot from 2023-04-15 22-47-29](https://user-images.githubusercontent.com/93591339/232263448-ee3c2546-c8fb-411e-ac3a-087f22e53ab9.png)
+![Screenshot from 2023-04-15 22-48-37](https://user-images.githubusercontent.com/93591339/232263549-ba4fd8dd-7d3c-4726-81e8-ba0ebcaba536.png)
+
+## Podman Desktop - UnInstall ChRIS
+
+Work in progress
+
 ## Application Startup & Performance
 
 On a fast computer with good internet speed, running `./podman/minichris.sh up`

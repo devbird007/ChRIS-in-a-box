@@ -1,7 +1,7 @@
 # Description
 # ![ChRIS logo](https://raw.githubusercontent.com/FNNDSC/ChRIS_ultron_backEnd/master/docs/assets/logo_chris.png) ChRIS in a box
 
-ChRIS in a Box allows the ability to access and use ChRIS on Edge Computing Devices that are deployed in facilities who would like to leverage the capabilities of ChRIS. 
+With a build once, run anywhere approach, ChRIS in a Box allows the ability to access and use ChRIS on Edge Computing Devices that are deployed in facilities who would like to leverage the capabilities of ChRIS. 
 
 [![MIT license](https://img.shields.io/github/license/FNNDSC/chris-in-a-box)](LICENSE)
 

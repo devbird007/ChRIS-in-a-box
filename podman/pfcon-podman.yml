@@ -41,6 +41,13 @@ spec:
           volumeMounts:
             - mountPath: /var/local/storeBase
               name: storebase
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m" 
 
         - name: pman
           image: ghcr.io/fnndsc/pman:5.0.0.a4
@@ -60,13 +67,19 @@ spec:
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: podman-socket
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 
       # Let SELinux allow us to access the Podman socket
       # https://unix.stackexchange.com/a/595152
       securityContext:
         seLinuxOptions:
           type: spc_t
-
       volumes:
         - name: storebase
           persistentVolumeClaim:

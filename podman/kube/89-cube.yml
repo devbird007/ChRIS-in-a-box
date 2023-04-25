@@ -63,6 +63,14 @@ spec:
           env:
             - name: DJANGO_COLLECTSTATIC
               value: "on"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+
 
         - name: cube-worker
           image: ghcr.io/fnndsc/cube:4.0.0.pre7

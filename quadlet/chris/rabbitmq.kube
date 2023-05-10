@@ -4,6 +4,9 @@ WantedBy=default.target
 [Unit]
 Requires=db.service
 After=db.service
+Requires=swift.service
+After=swift.service
+
 
 [Kube]
 # Point to the yaml file in the same directory

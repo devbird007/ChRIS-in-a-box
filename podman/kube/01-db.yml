@@ -1,7 +1,6 @@
 ---
 
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: minichris-postgres
@@ -38,13 +37,10 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
-
-
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: minichris-db-data
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

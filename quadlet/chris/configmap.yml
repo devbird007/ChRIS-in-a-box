@@ -1,5 +1,4 @@
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -54,3 +53,4 @@ metadata:
 data:
   SWIFT_USERNAME: "chris:chris1234"
   SWIFT_KEY: "testing"
+---

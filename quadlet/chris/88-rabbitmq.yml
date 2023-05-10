@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: minichris-rabbitmq
+  labels:
+    app: minichris-rabbitmq
+    app.kubernetes.io/component: queue
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "ChRIS backend asynchronous task queue"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minichris-rabbitmq
+  template:
+    metadata:
+      name: minichris-rabbitmq
+      labels:
+        app: minichris-rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: docker.io/library/rabbitmq:3
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

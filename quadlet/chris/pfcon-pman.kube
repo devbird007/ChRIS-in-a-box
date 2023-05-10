@@ -10,10 +10,12 @@ Requires=rabbitmq.service
 After=rabbitmq.service
 Requires=cube.service
 After=cube.service
+Requires=chrisui.service
+After=chrisui.service
 
 [Kube]
 # Point to the yaml file in the same directory
-Yaml=chrisui.yml
+Yaml=pfcon-pman.yml
 # Use the Chris network
 Network=chris.network
 # Publish the envoy proxy data port

@@ -10,7 +10,7 @@ After=swift.service
 
 [Kube]
 # Point to the yaml file in the same directory
-Yaml=swift.yml
+Yaml=rabbitmq.yml
 # Use the Chris network
 Network=chris.network
 # Publish the envoy proxy data port

@@ -1,12 +1,10 @@
 [Install]
 WantedBy=default.target
 
-[Unit]
-
 [Kube]
 # Point to the yaml file in the same directory
 Yaml=db.yml
 # Use the chris-demo network
 Network=chris.network
 # Use the  config map in the same directory
-ConfigMap=configmap.yml
+ConfigMap=minichris-db-config.yml

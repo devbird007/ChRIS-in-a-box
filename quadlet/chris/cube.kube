@@ -12,11 +12,11 @@ After=rabbitmq.service
 [Kube]
 # Point to the yaml file in the same directory
 Yaml=cube.yml
+
 # Use the Chris network
 Network=chris.network
-# Publish the envoy proxy data port
-# PublishPort=8000:8080
-# Publish the envoy proxy admin port
-# PublishPort=9000:9901
+
 # Use the envoy proxy config map in the same directory
-ConfigMap=configmap.yml
+ConfigMap=minichris-cube-config.yml
+ConfigMap=minichris-db-config.yml
+ConfigMap=minichris-docker-swift-onlyone-config.yml

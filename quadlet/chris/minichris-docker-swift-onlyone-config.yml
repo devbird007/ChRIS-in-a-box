@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minichris-docker-swift-onlyone-config
+  labels:
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "Configuration of the swift container"
+data:
+  SWIFT_USERNAME: "chris:chris1234"
+  SWIFT_KEY: "testing"

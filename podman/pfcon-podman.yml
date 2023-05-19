@@ -1,5 +1,5 @@
 ---
-# pfcon+pman pair using Podman
+# Run pfcon+pman pair using Podman
 
 apiVersion: apps/v1
 

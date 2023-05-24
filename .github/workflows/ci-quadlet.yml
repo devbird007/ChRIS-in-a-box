@@ -38,7 +38,8 @@ jobs:
             pkg-config \
             build-essential\
             libsystemd-dev\
-            uidmap
+            uidmap\
+            libapparmor-dev
             
       - name: Set up Go environment
         uses: actions/setup-go@v2

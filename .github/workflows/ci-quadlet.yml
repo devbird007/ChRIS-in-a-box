@@ -51,9 +51,9 @@ jobs:
 
       - name: Clone Repository
         run: git clone https://github.com/containers/conmon
-
-      - name: Print Working Directory
-        run: pwd
+     
+      - name: Change Directory
+        run: cd conmon
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"

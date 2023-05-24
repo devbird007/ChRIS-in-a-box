@@ -104,9 +104,12 @@ jobs:
         
       - name: Build and Install Podman
         run: |
-          cd podman
-          make BUILDTAGS="systemd"
-          sudo make install
+         sudo apt-get update
+         sudo apt-get install -y golang
+         CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
+            -ldflags '-X github.com/containers/podman/v4/libpod/define.gitCommit=47ac6c4cbe1fea2f78b1f72937b43a8c6be28420-dirty -X github.com/containers/podman/v4/libpod/define.buildInfo=1684964709 -X github.com/containers/podman/v4/libpod/config._installPrefix=/usr/local -X github.com/containers/podman/v4/libpod/config._etcDir=/etc -X github.com/containers/podman/v4/pkg/systemd/quadlet._binDir=/usr/local/bin -X github.com/containers/common/pkg/config.additionalHelperBinariesDir= ' \
+            -tags "systemd" \
+            -o bin/podman ./cmd/podman
 
           
 

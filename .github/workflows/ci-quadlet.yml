@@ -1,4 +1,4 @@
-name: Install Dependencies and Build
+name: Install Dependencies and Build for Podman
 
 on:
   push:

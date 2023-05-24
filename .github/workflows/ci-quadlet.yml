@@ -38,7 +38,7 @@ jobs:
       - name: Set up Go environment
         uses: actions/setup-go@v2
         with:
-          go-version: 1.x
+          go-version: 1.17
           # Specify any additional Go versions you need
 
       - name: Checkout code

@@ -63,9 +63,12 @@ jobs:
 
       - name: Print working directory
         run: pwd
+ 
+      - name: List the repos to verify
+        run: /home/runner/work
 
       - name: Build Conmon
-        run: make
+        run: /home/runner/work/make
 
       - name: Install Podman
         run: sudo make podman

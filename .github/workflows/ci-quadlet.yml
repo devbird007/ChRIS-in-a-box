@@ -87,7 +87,12 @@ jobs:
           git clone https://github.com/containers/podman/
           cd podman
           git pull origin main
-
+          
+      - name: Set Go version to 1.17
+        run: cd podman && go mod edit -go=1.17
+        
+      - name: Upgrade versions for Go 1.16 compatibility
+        run: cd podman && go mod tidy -go=1.16 && go mod tidy -go=1.17
 
       - name: List Repository Contents After Clone
         run: ls -la
@@ -95,7 +100,6 @@ jobs:
       - name: Build and Install Podman
         run: |
           cd podman
-          go mod edit -go=1.17
           go mod tidy
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 make BUILDTAGS="selinux seccomp systemd"
           sudo make install PREFIX=/usr

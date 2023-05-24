@@ -41,9 +41,6 @@ jobs:
           go-version: 1.17
           # Specify any additional Go versions you need
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Set GOPATH
         run: |
           echo "export GOPATH=~/go" >> $GITHUB_ENV
@@ -51,8 +48,6 @@ jobs:
       - name: Update PATH
         run: |
           echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV
-      - name: Checkout Repository
-        uses: actions/checkout@v2
 
       - name: Set up Go
         uses: actions/setup-go@v2

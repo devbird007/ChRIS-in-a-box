@@ -30,6 +30,8 @@ jobs:
             libselinux1-dev \
             libsystemd-dev \
             pkg-config \
+            build-essential\
+            libsystemd-dev\
             uidmap
             
       - name: Set up Go environment

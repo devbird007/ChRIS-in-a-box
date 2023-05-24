@@ -3,7 +3,7 @@ name: Install Packages and Set Up Go
 on:
   push:
     branches:
-      - main
+      - quad
 
 jobs:
   build:

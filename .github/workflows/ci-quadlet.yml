@@ -1,16 +1,19 @@
-name: Install Packages
+name: Install Packages and Set Up Go
 
 on:
   push:
     branches:
-      - quad
+      - main
 
 jobs:
-  install-packages:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Install Dependencies
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Packages
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -34,17 +37,11 @@ jobs:
             libsystemd-dev \
             pkg-config \
             uidmap
-      - name: Set GOPATH
-        run: export GOPATH=~/go
-      
-      - name: Clone Go repository
-        run: git clone https://go.googlesource.com/go $GOPATH
-      
-      - name: Change directory to Go source
-        run: cd $GOPATH/src
-      
-      - name: Build and test
-        run: ./all.bash
-      
-      - name: Add Go binaries to PATH
-        run: export PATH=$GOPATH/bin:$PATH
+
+      - name: Set Up Go Environment
+        run: |
+          export GOPATH=$HOME/go
+          git clone https://go.googlesource.com/go $GOPATH
+          cd $GOPATH/src
+          ./all.bash
+          export PATH=$GOPATH/bin:$PATH

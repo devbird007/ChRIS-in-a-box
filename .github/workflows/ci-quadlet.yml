@@ -1,4 +1,4 @@
-name: Install Packages and Set Up Go
+name: Install Dependencies and Build
 
 on:
   push:
@@ -8,12 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Install Packages
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -37,11 +34,42 @@ jobs:
             libsystemd-dev \
             pkg-config \
             uidmap
-
-      - name: Set Up Go Environment
+      
+      - name: Set GOPATH
+        run: export GOPATH=~/go
+      
+      - name: Clone Go repository
         run: |
-          export GOPATH=$HOME/go
           git clone https://go.googlesource.com/go $GOPATH
-          cd $GOPATH/src
+          cd $GOPATH
+          cd src
           ./all.bash
           export PATH=$GOPATH/bin:$PATH
+      
+      - name: Clone conmon repository
+        run: |
+          git clone https://github.com/containers/conmon
+          cd conmon
+          export GOCACHE="$(mktemp -d)"
+          make
+          sudo make podman
+      
+      - name: Clone runc repository
+        run: |
+          git clone https://github.com/opencontainers/runc.git $GOPATH/src/github.com/opencontainers/runc
+          cd $GOPATH/src/github.com/opencontainers/runc
+          make BUILDTAGS="selinux seccomp"
+          sudo cp runc /usr/bin/runc
+      
+      - name: Set up /etc/containers directory
+        run: |
+          sudo mkdir -p /etc/containers
+          sudo curl -L -o /etc/containers/registries.conf https://src.fedoraproject.org/rpms/containers-common/raw/main/f/registries.conf
+          sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json
+      
+      - name: Install Podman
+        run: |
+          git clone https://github.com/containers/podman/
+          cd podman
+          make BUILDTAGS="systemd"
+          sudo make install PREFIX=/usr

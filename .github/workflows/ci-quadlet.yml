@@ -98,7 +98,9 @@ jobs:
         run: cd podman
 
       - name: Install Podman
-        run: sudo make install
+        run: |
+          go build
+          sudo make install
           
 
 

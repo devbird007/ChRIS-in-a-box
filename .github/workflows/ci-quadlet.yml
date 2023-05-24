@@ -50,13 +50,13 @@ jobs:
         run: sudo apt-get install make
 
       - name: Clone Repository
-        run: git clone https://github.com/containers/conmon
-     
-      - name: Change Directory
-        run: cd /home/runner/work/ChRIS-in-a-box/ChRIS-in-a-box/conmon  
+        run: git clone https://github.com/containers/conmon 
   
-      - name: Print Directory
-        run: pwd  
+      - name: List files
+        run: ls -lart  
+        
+      - name: Change Directory
+        run: cd /home/runner/work/ChRIS-in-a-box/ChRIS-in-a-box/conmon 
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"

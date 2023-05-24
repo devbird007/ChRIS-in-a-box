@@ -64,3 +64,12 @@ jobs:
 
       - name: Install Podman
         run: sudo make podman
+
+      - uses: actions/checkout@v2
+        with:
+          repository: opencontainers/runc
+      - name: Build runc
+        run: make BUILDTAGS="selinux seccomp"
+
+      - name: Install runc
+        run: sudo cp $GOPATH/src/github.com/opencontainers/runc/runc /usr/bin/runc

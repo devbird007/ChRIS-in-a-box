@@ -69,9 +69,6 @@ jobs:
 
       - name: Install Podman
         run: sudo make podman
-        
-      - name: Check Podman Version
-        run: podman --version
      
       - name: Check runc
         run: runc --version

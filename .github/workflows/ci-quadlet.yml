@@ -97,9 +97,6 @@ jobs:
       - name: Change directory to Podman
         run: cd podman
 
-      - name: Build Podman
-        run: make BUILDTAGS=""
-
       - name: Install Podman
         run: sudo make install
           

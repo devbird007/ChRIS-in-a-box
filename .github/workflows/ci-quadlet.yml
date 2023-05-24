@@ -85,22 +85,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: containers/podman
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential
-
-      - name: Clone Podman repository
-        run: git clone https://github.com/containers/podman/
-        
-      - name: Change directory to Podman
-        run: cd podman
-
+      - name: Build Podman
+        run: make BUILDTAGS="selinux seccomp"
       - name: Install Podman
-        run: |
-          go build
-          sudo make install
-          
-
+        run: sudo make install PREFIX=/usr
 

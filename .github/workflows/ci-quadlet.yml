@@ -52,9 +52,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: containers/conmon
-        
-      - name: Change Directory
-        run: cd conmon 
+   
+      - name: list files
+        run: ls -lart
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"

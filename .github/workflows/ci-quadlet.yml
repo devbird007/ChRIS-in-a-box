@@ -48,9 +48,12 @@ jobs:
 
       - name: Install Make
         run: sudo apt-get install make
+        
+      - name: Change Directory
+        run: cd /home/runner/work 
 
       - name: Clone Repository
-        run: git clone https://github.com/containers/conmon 
+        run: git clone https://github.com/containers/conmon /home/runner/work/conmon 
   
       - name: List Repository Contents
         run: ls -la /conmon

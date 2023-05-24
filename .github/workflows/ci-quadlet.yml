@@ -95,6 +95,7 @@ jobs:
       - name: Build and Install Podman
         run: |
           cd podman
+          go mod edit -go=1.17
           go mod tidy
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 make BUILDTAGS="selinux seccomp systemd"
           sudo make install PREFIX=/usr

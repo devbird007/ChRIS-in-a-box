@@ -7,6 +7,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Remove existing Podman
+        run: |
+          sudo apt-get remove -y podman
+          sudo apt-get autoremove -y
+          sudo rm -rf /etc/containers /var/lib/containers /var/lib/podman
+
+      - name: Verify removal
+        run: podman --version
+        
       - name: Install Dependencies
         run: |
           sudo apt-get update

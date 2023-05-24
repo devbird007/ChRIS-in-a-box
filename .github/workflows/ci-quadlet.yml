@@ -50,6 +50,7 @@ jobs:
 
       - name: Clone Go repository
         run: |
+          rm -rf /home/runner/go
           git clone https://go.googlesource.com/go $HOME/go
 
       - name: Build Go

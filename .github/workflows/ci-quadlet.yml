@@ -56,7 +56,7 @@ jobs:
         run: ls -lart  
         
       - name: Change Directory
-        run: cd /home/runner/work/ChRIS-in-a-box/ChRIS-in-a-box/conmon 
+        run: cd conmon 
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"

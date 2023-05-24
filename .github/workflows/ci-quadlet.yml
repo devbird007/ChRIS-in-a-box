@@ -51,12 +51,12 @@ jobs:
 
       - name: Clone Repository
         run: git clone https://github.com/containers/conmon
+      
+      - name: Print Directory
+        run: pwd  
      
       - name: Change Directory
-        run: cd conmon
-        
-      - name: Print Directory
-        run: pwd        
+        run: cd /home/runner/work/ChRIS-in-a-box/ChRIS-in-a-box/conmon     
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"

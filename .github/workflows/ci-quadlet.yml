@@ -78,9 +78,16 @@ jobs:
 
       - name: Download policy.json
         run: sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json
-      
+    
+      - name: Cleanup existing Podman directory
+        run: rm -rf podman/
+    
       - name: Clone Podman Repository
-        run: git clone https://github.com/containers/podman/
+        run: |
+          git clone https://github.com/containers/podman/
+          cd podman
+          git pull origin main
+
 
       - name: List Repository Contents After Clone
         run: ls -la
@@ -88,5 +95,5 @@ jobs:
       - name: Build and Install Podman
         run: |
           cd podman
-          make BUILDTAGS="selinux seccomp"
+          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 make BUILDTAGS="systemd"
           sudo make install PREFIX=/usr

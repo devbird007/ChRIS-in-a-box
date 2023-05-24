@@ -84,7 +84,7 @@ jobs:
     
       - name: Cleanup existing Podman directory
         run: rm -rf podman/
-    
+        
       - name: Clone Podman Repository
         run: |
           git clone https://github.com/containers/podman/
@@ -98,9 +98,7 @@ jobs:
         run: cd podman && go mod tidy -go=1.16 && go mod tidy -go=1.17
       - name: Sync Vendor Directory
         run: cd podman && go mod vendor
-        
-      - name: Cleanup 
-        run: rm -rf podman/vendor/github.com/containers/image
+      
         
       - name: Build and Install Podman
         run: |

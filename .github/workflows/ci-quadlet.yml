@@ -101,7 +101,11 @@ jobs:
           cd podman
           go mod tidy
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
-            -ldflags '-X github.com/containers/podman/v4/libpod/define.gitCommit=47ac6c4cbe1fea2f78b1f72937b43a8c6be28420-dirty -X github.com/containers/podman/v4/libpod/define.build
+            -ldflags '-X github.com/containers/podman/v4/libpod/define.gitCommit=47ac6c4cbe1fea2f78b1f72937b43a8c6be28420-dirty -X github.com/containers/podman/v4/libpod/define.buildInfo=1684962577 -X github.com/containers/podman/v4/libpod/config._installPrefix=/usr/local -X github.com/containers/podman/v4/libpod/config._etcDir=/etc -X github.com/containers/podman/v4/pkg/systemd/quadlet._binDir=/usr/local/bin -X github.com/containers/common/pkg/config.additionalHelperBinariesDir= ' \
+            -tags "selinux seccomp systemd" \
+            -o bin/podman ./cmd/podman -mod=vendor
+          sudo make install PREFIX=/usr        
+
           
 
 

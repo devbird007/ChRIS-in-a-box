@@ -51,7 +51,6 @@ jobs:
       - name: Update PATH
         run: |
           echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV
-
       - name: Checkout Repository
         uses: actions/checkout@v2
 
@@ -63,9 +62,6 @@ jobs:
       - name: Install Make
         run: sudo apt-get install make
 
-      - name: Install Podman Dependencies
-        run: sudo apt-get install -y btrfs-progs libbtrfs-dev libseccomp-dev libglib2.0-dev
-
       - name: Clone Repository
         run: git clone https://github.com/containers/conmon
 
@@ -74,6 +70,9 @@ jobs:
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
+
+      - name: List Repository Contents
+        run: ls -la
 
       - name: Build Conmon
         run: make

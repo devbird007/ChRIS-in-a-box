@@ -1,4 +1,4 @@
-name: Install Dependencies and Build for Podman
+name: Install Dependencies and Build Go
 
 on:
   push:
@@ -8,8 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Install Dependencies
         run: |
           sudo apt-get update
@@ -34,46 +37,17 @@ jobs:
             libsystemd-dev \
             pkg-config \
             uidmap
-      
-      - name: Set GOPATH
-        run: export GOPATH=~/go
 
-      - name: Clone Go repository
-        run: git clone https://go.googlesource.com/go $GOPATH
+      - name: Set GOPATH and Clone Go Repository
+        run: |
+          export GOPATH=~/go
+          git clone https://go.googlesource.com/go $GOPATH
 
-      - name: Change directory to Go source
-        run: cd $GOPATH/src
+      - name: Build Go
+        run: |
+          cd $GOPATH/src
+          ./all.bash
 
-      - name: Build and test
-        run: ./all.bash
-
-      - name: Add Go binaries to PATH
-        run: export PATH=$GOPATH/bin:$PATH
-      
-      - name: Clone conmon repository
+      - name: Set Go Path
         run: |
-          git clone https://github.com/containers/conmon
-          cd conmon
-          export GOCACHE="$(mktemp -d)"
-          make
-          sudo make podman
-      
-      - name: Clone runc repository
-        run: |
-          git clone https://github.com/opencontainers/runc.git $GOPATH/src/github.com/opencontainers/runc
-          cd $GOPATH/src/github.com/opencontainers/runc
-          make BUILDTAGS="selinux seccomp"
-          sudo cp runc /usr/bin/runc
-      
-      - name: Set up /etc/containers directory
-        run: |
-          sudo mkdir -p /etc/containers
-          sudo curl -L -o /etc/containers/registries.conf https://src.fedoraproject.org/rpms/containers-common/raw/main/f/registries.conf
-          sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json
-      
-      - name: Install Podman
-        run: |
-          git clone https://github.com/containers/podman/
-          cd podman
-          make BUILDTAGS="systemd"
-          sudo make install PREFIX=/usr
+          echo "export PATH=$GOPATH/bin:$PATH" >> $HOME/.bashrc

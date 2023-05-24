@@ -54,12 +54,9 @@ jobs:
 
       - name: Clone Repository
         run: git clone https://github.com/containers/conmon /home/runner/work/conmon 
-  
-      - name: List Repository Contents
-        run: ls -la /conmon
         
       - name: Change Directory
-        run: cd conmon 
+        run: pwd 
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"

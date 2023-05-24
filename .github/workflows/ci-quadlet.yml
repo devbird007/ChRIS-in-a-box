@@ -12,9 +12,6 @@ jobs:
           sudo apt-get remove -y podman
           sudo apt-get autoremove -y
           sudo rm -rf /etc/containers /var/lib/containers /var/lib/podman
-
-      - name: Verify removal
-        run: podman --version
         
       - name: Install Dependencies
         run: |

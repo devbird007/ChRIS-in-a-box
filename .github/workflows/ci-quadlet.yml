@@ -61,6 +61,9 @@ jobs:
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
 
+      - name: Print working directory
+        run: pwd
+
       - name: Build Conmon
         run: make
 

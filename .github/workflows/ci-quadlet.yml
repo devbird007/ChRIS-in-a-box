@@ -37,14 +37,18 @@ jobs:
       
       - name: Set GOPATH
         run: export GOPATH=~/go
-      
+
       - name: Clone Go repository
-        run: |
-          git clone https://go.googlesource.com/go $GOPATH
-          cd $GOPATH
-          cd src
-          ./all.bash
-          export PATH=$GOPATH/bin:$PATH
+        run: git clone https://go.googlesource.com/go $GOPATH
+
+      - name: Change directory to Go source
+        run: cd $GOPATH/src
+
+      - name: Build and test
+        run: ./all.bash
+
+      - name: Add Go binaries to PATH
+        run: export PATH=$GOPATH/bin:$PATH
       
       - name: Clone conmon repository
         run: |

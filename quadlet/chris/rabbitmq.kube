@@ -11,5 +11,6 @@ After=swift.service
 [Kube]
 # Point to the yaml file in the same directory
 Yaml=rabbitmq.yml
+
 # Use the Chris network
 Network=chris.network

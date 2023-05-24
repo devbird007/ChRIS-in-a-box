@@ -16,7 +16,7 @@ Yaml=cube.yml
 # Use the Chris network
 Network=chris.network
 
-# Use the envoy proxy config map in the same directory
+# Use the config maps minichris-cube-config, minichris-db-config, minichris-docker-swift-onlyone-config   in the same directory
 ConfigMap=minichris-cube-config.yml
 ConfigMap=minichris-db-config.yml
 ConfigMap=minichris-docker-swift-onlyone-config.yml

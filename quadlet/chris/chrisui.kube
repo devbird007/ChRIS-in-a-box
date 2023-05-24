@@ -14,7 +14,3 @@ After=cube.service
 [Kube]
 # Point to the yaml file in the same directory
 Yaml=chrisui.yml
-# Publish the envoy proxy data port
-# PublishPort=8000:8080
-# Publish the envoy proxy admin port
-# PublishPort=9000:9901

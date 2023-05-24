@@ -76,3 +76,13 @@ jobs:
 
       - name: Download policy.json
         run: sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json
+      
+      - uses: actions/checkout@v2
+        with:
+          repository: containers/podman
+          
+      - name: Build and Install Podman
+        run: |
+          cd podman
+          make BUILDTAGS="systemd"
+          sudo make install

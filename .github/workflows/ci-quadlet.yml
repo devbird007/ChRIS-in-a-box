@@ -45,30 +45,22 @@ jobs:
       - name: Update PATH
         run: |
           echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV
-
+    
       - name: Install Make
         run: sudo apt-get install make
+      
+      - uses: actions/checkout@v2
+        with:
+          repository: containers/conmon
         
       - name: Change Directory
-        run: cd /home/runner/work 
-
-      - name: Clone Repository
-        run: git clone https://github.com/containers/conmon /home/runner/work/conmon 
-        
-      - name: Change Directory
-        run: cd /home/runner/work/conmon 
+        run: cd conmon 
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
 
-      - name: Print working directory
-        run: pwd
- 
-      - name: List the repos to verify
-        run: /home/runner/work
-
       - name: Build Conmon
-        run: /home/runner/work/make
+        run: make
 
       - name: Install Podman
         run: sudo make podman

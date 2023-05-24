@@ -61,6 +61,7 @@ jobs:
       - name: Update PATH
         run: |
           echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV
+
       - name: Checkout Repository
         uses: actions/checkout@v2
 
@@ -81,25 +82,14 @@ jobs:
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
 
+      - name: Generate Makefile
+        run: autoreconf -fi
+
+      - name: Configure
+        run: ./configure
+
       - name: Build Conmon
         run: make
 
       - name: Install Podman
         run: sudo make podman
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Go environment
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-
-      - name: Build runc
-        run: |
-          git clone https://github.com/opencontainers/runc.git $GOPATH/src/github.com/opencontainers/runc
-          cd $GOPATH/src/github.com/opencontainers/runc
-          make BUILDTAGS="selinux seccomp"
-
-      - name: Install runc
-        run: |
-          sudo cp $GOPATH/src/github.com/opencontainers/runc/runc /usr/bin/runc

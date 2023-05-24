@@ -54,9 +54,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: containers/conmon
-   
-      - name: list files
-        run: ls -lart
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
@@ -66,6 +63,9 @@ jobs:
 
       - name: Install Podman
         run: sudo make podman
+        
+      - name: Check Podman Version
+        run: podman --version
      
       - name: Check runc
         run: runc --version
@@ -96,7 +96,7 @@ jobs:
       - name: Sync Vendor Directory
         run: cd podman && go mod vendor
         
-      - name: Sync Vendor Directory
+      - name: Cleanup 
         run: rm -rf podman/vendor/github.com/containers/image
         
       - name: Build and Install Podman
@@ -105,10 +105,9 @@ jobs:
           go mod tidy
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
             -ldflags '-X github.com/containers/podman/v4/libpod/define.gitCommit=47ac6c4cbe1fea2f78b1f72937b43a8c6be28420-dirty -X github.com/containers/podman/v4/libpod/define.buildInfo=1684962577 -X github.com/containers/podman/v4/libpod/config._installPrefix=/usr/local -X github.com/containers/podman/v4/libpod/config._etcDir=/etc -X github.com/containers/podman/v4/pkg/systemd/quadlet._binDir=/usr/local/bin -X github.com/containers/common/pkg/config.additionalHelperBinariesDir= ' \
-            -tags "selinux seccomp systemd" \
-            -o bin/podman ./cmd/podman
+           -tags "selinux seccomp systemd" \
+          -o bin/podman ./cmd/podman
           sudo make install PREFIX=/usr
-
           
 
 

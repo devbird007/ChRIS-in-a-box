@@ -64,6 +64,11 @@ jobs:
 
       - name: Install Podman
         run: sudo make podman
+     
+      - name: Check runc
+        run: runc --version
+
+
 
       - uses: actions/checkout@v2
         with:

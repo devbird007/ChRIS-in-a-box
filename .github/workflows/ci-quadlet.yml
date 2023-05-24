@@ -85,6 +85,9 @@ jobs:
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
 
+      - name: Check configure.ac file
+        run: test -f configure.ac || echo "configure.ac file not found"
+
       - name: Generate Autotools Files
         run: autoreconf -fi
 

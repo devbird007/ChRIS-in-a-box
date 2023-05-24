@@ -1,14 +1,11 @@
 name: Install Dependencies and Build Go
-
 on:
   push:
     branches:
       - quad
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -37,17 +34,29 @@ jobs:
             libsystemd-dev \
             pkg-config \
             uidmap
+            
+      - name: Set up Go environment
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.x
+          # Specify any additional Go versions you need
 
-      - name: Set GOPATH and Clone Go Repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set GOPATH
         run: |
-          export GOPATH=~/go
-          git clone https://go.googlesource.com/go $GOPATH
+          echo "export GOPATH=~/go" >> $GITHUB_ENV
+
+      - name: Clone Go repository
+        run: |
+          git clone https://go.googlesource.com/go $HOME/go
 
       - name: Build Go
         run: |
-          cd $GOPATH/src
+          cd $HOME/go/src
           ./all.bash
 
-      - name: Set Go Path
+      - name: Update PATH
         run: |
-          echo "export PATH=$GOPATH/bin:$PATH" >> $HOME/.bashrc
+          echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV

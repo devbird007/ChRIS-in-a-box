@@ -48,16 +48,6 @@ jobs:
         run: |
           echo "export GOPATH=~/go" >> $GITHUB_ENV
 
-      - name: Clone Go repository
-        run: |
-          rm -rf /home/runner/go
-          git clone https://go.googlesource.com/go $HOME/go
-
-      - name: Build Go
-        run: |
-          cd $HOME/go/src
-          ./all.bash
-
       - name: Update PATH
         run: |
           echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV
@@ -68,7 +58,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16
+          go-version: 1.17
 
       - name: Install Make
         run: sudo apt-get install make

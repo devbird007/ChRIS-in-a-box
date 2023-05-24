@@ -54,12 +54,12 @@ jobs:
      
       - name: Change Directory
         run: cd conmon
+        
+      - name: Print Directory
+        run: pwd        
 
       - name: Set up GOCACHE
         run: export GOCACHE="$(mktemp -d)"
-
-      - name: List Repository Contents
-        run: ls -la
 
       - name: Build Conmon
         run: make

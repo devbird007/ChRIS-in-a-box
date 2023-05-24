@@ -52,8 +52,8 @@ jobs:
       - name: Clone Repository
         run: git clone https://github.com/containers/conmon 
   
-      - name: List files
-        run: ls -lart  
+      - name: List Repository Contents
+        run: ls -la /conmon
         
       - name: Change Directory
         run: cd conmon 

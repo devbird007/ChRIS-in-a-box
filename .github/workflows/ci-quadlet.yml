@@ -67,3 +67,12 @@ jobs:
      
       - name: Check runc
         run: runc --version
+        
+      - name: Create /etc/containers directory
+        run: sudo mkdir -p /etc/containers
+
+      - name: Download registries.conf
+        run: sudo curl -L -o /etc/containers/registries.conf https://src.fedoraproject.org/rpms/containers-common/raw/main/f/registries.conf
+
+      - name: Download policy.json
+        run: sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json

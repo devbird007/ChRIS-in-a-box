@@ -3,7 +3,7 @@ name: Go Build
 on:
   push:
     branches:
-      - quad
+      - main
 
 jobs:
   build:

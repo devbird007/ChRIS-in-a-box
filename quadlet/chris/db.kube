@@ -5,8 +5,5 @@ WantedBy=default.target
 # Point to the yaml file in the same directory
 Yaml=db.yml
 
-# Use the chris-demo network
-Network=chris.network
-
 # Use the  config map minichris-db-config in the same directory
 ConfigMap=minichris-db-config.yml

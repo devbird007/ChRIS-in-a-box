@@ -87,11 +87,14 @@ jobs:
         run: git clone https://github.com/containers/podman/
 
       - name: Change to Podman Directory
-        run: cd podman
-
+        run: |
+          pwd
+          ls -lart
+          cd podman
+          
       - name: Build and Install Podman
         run: |
-          make BUILDTAGS="selinux seccomp"
+          make BUILDTAGS="selinux seccomp systemd"
           sudo make install PREFIX=/usr
         
       - name: Check Podman Version

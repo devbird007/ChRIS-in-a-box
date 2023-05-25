@@ -82,12 +82,14 @@ jobs:
 
       - name: Download policy.json
         run: sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json
-    
-      - uses: actions/checkout@v2
-        with:
-          repository: containers/podman
-      - name: Build Podman
-        run: make BUILDTAGS="selinux seccomp"
-      - name: Install Podman
-        run: sudo make install PREFIX=/usr
+      
+      - name: Clone Podman Repository
+        run: git clone https://github.com/containers/podman/
 
+      - name: Change to Podman Directory
+        run: cd podman
+
+      - name: Build and Install Podman
+        run: |
+          make BUILDTAGS="selinux seccomp"
+          sudo make install PREFIX=/usr

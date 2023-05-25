@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Remove existing Podman
+      - name: Remove existing Podman from the runner
         run: |
           sudo apt-get remove -y podman
           sudo apt-get autoremove -y

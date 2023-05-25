@@ -1,0 +1,107 @@
+name: Install Dependencies and Build Go
+on:
+  push:
+    branches:
+      - quadlet
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove existing Podman from the runner
+        run: |
+          sudo apt-get remove -y podman
+          sudo apt-get autoremove -y
+          sudo rm -rf /etc/containers /var/lib/containers /var/lib/podman
+        
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            btrfs-progs \
+            crun \
+            git \
+            golang-go \
+            go-md2man \
+            iptables \
+            libassuan-dev \
+            libbtrfs-dev \
+            libc6-dev \
+            libdevmapper-dev \
+            libglib2.0-dev \
+            libgpgme-dev \
+            libgpg-error-dev \
+            libprotobuf-dev \
+            libprotobuf-c-dev \
+            libseccomp-dev \
+            libselinux1-dev \
+            libsystemd-dev \
+            pkg-config \
+            build-essential\
+            libsystemd-dev\
+            uidmap\
+            libapparmor-dev
+            
+      - name: Set up Go environment
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+          # Specify any additional Go versions you need
+
+      - name: Set GOPATH
+        run: |
+          echo "export GOPATH=~/go" >> $GITHUB_ENV
+
+      - name: Update PATH
+        run: |
+          echo "export PATH=\$GOPATH/bin:\$PATH" >> $GITHUB_ENV
+    
+      - name: Install Make
+        run: sudo apt-get install make
+      
+      - uses: actions/checkout@v2
+        with:
+          repository: containers/conmon
+
+      - name: Set up GOCACHE
+        run: export GOCACHE="$(mktemp -d)"
+
+      - name: Build Conmon
+        run: make
+
+      - name: Install Podman
+        run: sudo make podman
+     
+      - name: Check runc
+        run: runc --version
+        
+      - name: Create /etc/containers directory
+        run: sudo mkdir -p /etc/containers
+
+      - name: Download registries.conf
+        run: sudo curl -L -o /etc/containers/registries.conf https://src.fedoraproject.org/rpms/containers-common/raw/main/f/registries.conf
+
+      - name: Download policy.json
+        run: sudo curl -L -o /etc/containers/policy.json https://src.fedoraproject.org/rpms/containers-common/raw/main/f/default-policy.json
+      
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+          
+      - name: Build and Test
+        run: |
+          go clean -modcache
+          go mod download
+          go get -u github.com/containers/image/v5/openshift
+         
+      - name: Clone Podman Repository
+        run: git clone https://github.com/containers/podman/
+              
+      - name: Change to Podman Directory & Build and Install Podman
+        run: |
+          cd podman
+          make BUILDTAGS="systemd"
+          sudo make install
+        
+      - name: Check Podman Version
+        run: podman --version

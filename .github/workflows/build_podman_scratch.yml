@@ -2,7 +2,7 @@ name: Install Dependencies and Build Go
 on:
   push:
     branches:
-      - main
+      - podman-scratch
 jobs:
   build:
     runs-on: ubuntu-latest

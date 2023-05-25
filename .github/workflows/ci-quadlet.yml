@@ -93,3 +93,6 @@ jobs:
         run: |
           make BUILDTAGS="selinux seccomp"
           sudo make install PREFIX=/usr
+        
+      - name: Check Podman Version
+        run: podman --version

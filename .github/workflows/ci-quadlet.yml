@@ -102,8 +102,6 @@ jobs:
           cd podman
           make BUILDTAGS="systemd"
           sudo make install
-          sudo cp * /usr/bin/
-          cd bin
         
       - name: Check Podman Version
         run: podman --version

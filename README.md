@@ -76,7 +76,7 @@ running anything which might interfere with _miniChRIS_.
 
 ## Podman Desktop - UnInstall ChRIS
 
-Work in progress
+This is a work in progress
 
 ## Application Startup & Performance
 

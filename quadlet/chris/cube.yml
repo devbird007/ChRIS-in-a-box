@@ -46,7 +46,7 @@ spec:
             - configMapRef:
                 name: minichris-db-config
             - configMapRef:
-                name: minichris-docker-swift-onlyone-config
+                name: minichris-podman-swift-onlyone-config
       containers:
         - name: server
           image: ghcr.io/fnndsc/cube:4.0.0.pre7
@@ -59,7 +59,7 @@ spec:
             - configMapRef:
                 name: minichris-db-config
             - configMapRef:
-                name: minichris-docker-swift-onlyone-config
+                name: minichris-podman-swift-onlyone-config
           env:
             - name: DJANGO_COLLECTSTATIC
               value: "on"
@@ -81,7 +81,7 @@ spec:
             - configMapRef:
                 name: minichris-db-config
             - configMapRef:
-                name: minichris-docker-swift-onlyone-config
+                name: minichris-podman-swift-onlyone-config
 
         - name: cube-worker-periodic
           image: ghcr.io/fnndsc/cube:4.0.0.pre7
@@ -92,7 +92,7 @@ spec:
             - configMapRef:
                 name: minichris-db-config
             - configMapRef:
-                name: minichris-docker-swift-onlyone-config
+                name: minichris-podman-swift-onlyone-config
 
         - name: cube-celery-beat
           image: ghcr.io/fnndsc/cube:4.0.0.pre7
@@ -103,5 +103,5 @@ spec:
             - configMapRef:
                 name: minichris-db-config
             - configMapRef:
-                name: minichris-docker-swift-onlyone-config
+                name: minichris-podman-swift-onlyone-config
 

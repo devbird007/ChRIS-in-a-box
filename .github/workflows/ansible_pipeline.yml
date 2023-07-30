@@ -19,8 +19,5 @@ jobs:
           sudo apt-get install -y ansible
 
       - name: Run Ansible playbook
-        uses: mshahat/ansible-playbook@v1
-        with:
-          playbook: ChRIS-in-a-box/podman/chri_play.yml
-          inventory: localhost,
-          extra_vars: '{"arg": "up"}'
+        working-directory: ChRIS-in-a-box/podman/
+        run: ansible-playbook chri_play.yml -e arg="up"

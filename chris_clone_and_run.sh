@@ -1,7 +1,7 @@
 # Script
 #!/bin/bash
 
-# Replace with the URL of your Git repository
+#  Git repository URL for Chris
 GIT_REPO_URL="https://github.com/FNNDSC/ChRIS-in-a-box.git"
 
 # Replace with the desired directory where the repository will be cloned

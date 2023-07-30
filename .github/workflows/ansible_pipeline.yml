@@ -1,5 +1,4 @@
-
-name: Ansible Playbook to deploy chris using Podman
+name: Ansible Playbook
 
 on:
   push:
@@ -20,6 +19,8 @@ jobs:
           sudo apt-get install -y ansible
 
       - name: Run Ansible playbook
-        working-directory: ChRIS-in-a-box/podman/
-        run: |
-          ansible-playbook chri_play.yml -e arg="up"
+        uses: softprops/action-ansible@v1
+        with:
+          playbook: ChRIS-in-a-box/podman/chri_play.yml
+          inventory: localhost,
+          extra_vars: '{"arg": "up"}'

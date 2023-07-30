@@ -76,6 +76,9 @@ running anything which might interfere with _miniChRIS_.
 
 ![Screenshot from 2023-07-30 00-10-55](https://github.com/FNNDSC/ChRIS-in-a-box/assets/93591339/612b4917-d20f-43a5-9558-22f4346ec79b)
 
+![Screenshot from 2023-07-30 00-11-54](https://github.com/FNNDSC/ChRIS-in-a-box/assets/93591339/8585abd8-5a5a-4d51-ba0f-9862d629dd12)
+
+
 
 ## Podman Desktop - UnInstall ChRIS
 

@@ -1,0 +1,180 @@
+---
+ - hosts: localhost
+   module_defaults:
+    ansible.builtin.uri:
+      user: "{{ controller_user }}"
+      password: "{{ controller_password }}"
+      force_basic_auth: yes
+      validate_certs: no
+      
+   tasks:
+   - name: Creating Virtual Machine Custom Resource File
+     copy:
+       dest: "~/test-vm.yaml"
+       content: |
+         apiVersion: kubevirt.io/v1
+         kind: VirtualMachine
+         metadata:
+           name: test
+           namespace: default
+           labels:
+             app: test
+             vm.kubevirt.io/template: rhel8-server-small
+             vm.kubevirt.io/template.namespace: openshift
+             vm.kubevirt.io/template.revision: '1'
+             vm.kubevirt.io/template.version: v0.24.2
+         spec:
+           dataVolumeTemplates:
+             - apiVersion: cdi.kubevirt.io/v1beta1
+               kind: DataVolume
+               metadata:
+                 creationTimestamp: null
+                 name: test
+               spec:
+                 source:
+                   pvc:
+                     name: rhel8-b0bacbb4e426
+                     namespace: openshift-virtualization-os-images
+                 storage:
+                   resources:
+                     requests:
+                       storage: 30Gi
+           running: true
+           template:
+             metadata:
+               annotations:
+                 vm.kubevirt.io/flavor: small
+                 vm.kubevirt.io/os: rhel8
+                 vm.kubevirt.io/workload: server
+               creationTimestamp: null
+               labels:
+                 kubevirt.io/domain: test
+                 kubevirt.io/size: small
+             spec:
+               domain:
+                 cpu:
+                   cores: 1
+                   sockets: 1
+                   threads: 1
+                 devices:
+                   disks:
+                     - disk:
+                         bus: virtio
+                       name: rootdisk
+                     - disk:
+                         bus: virtio
+                       name: cloudinitdisk
+                   interfaces:
+                     - macAddress: '02:0d:9b:00:00:08'
+                       masquerade: {}
+                       model: virtio
+                       name: default
+                     - bridge: {}
+                       macAddress: '02:0d:9b:00:00:01'
+                       model: virtio
+                       name: nic1
+                   networkInterfaceMultiqueue: true
+                   rng: {}
+                 machine:
+                   type: pc-q35-rhel8.6.0
+                 resources:
+                   requests:
+                     memory: 2Gi
+               evictionStrategy: LiveMigrate
+               networks:
+                 - name: default
+                   pod: {}
+                 - multus:
+                     networkName: br-ext
+                   name: nic1
+               terminationGracePeriodSeconds: 180
+               volumes:
+                 - dataVolume:
+                     name: test
+                   name: rootdisk
+                 - cloudInitNoCloud:
+                     userData: |-
+                       #cloud-config
+                       user: cloud-user
+                       password: password
+                       chpasswd: { expire: False }
+                       ssh_authorized_keys:
+                         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoy2/8SC8K+9PDNOqeNady8xck4AgXqQkf0uusYfDJ8IS4pFh178AVkz2sz3GSbU41CMxO6IhyQS4Rga3Ft/VlW6ZAW7icz3mw6IrLRacAAeY1BlfxfupQL/yHjKSZRze9vDjfQ9UDqlHF/II779Kz5yRKYqXsCt+wYESU7DzdPuGgbEKXrwi9GrxuXqbRZOz5994dQW7bHRTwuRmF9KzU7gMtMCah+RskLzE46fc2e4zD1AKaQFaEm4aGbJjQkELfcekrE/VH3i35cBUDacGcUYmUEaco3c/+phkNP4Iblz4AiDcN/TpjlhbU3Mbx8ln6W4aaYIyC4EVMfgvkRVS1xzXcHexs1fox724J07M1nhy+YxvaOYorQLvXMGhcBc9Z2Au2GA5qAr5hr96AHgu3600qeji0nMM/0HoiEVbxNWfkj4kAegbItUEVBAWjjpkncbe5Ph9nF2DsBrrg4TsJIplYQ+lGewzLTm/cZ1DnIMZvTY/Vnimh7qa9aRrpMB0= bschmaus@provisioning
+                     networkData: |
+                       version: 2
+                       ethernets:
+                         eth1: 
+                            dhcp4: false
+                            dhcp6: false
+                            addresses: [ 192.168.1.50/24 ]
+                            gateway4: 192.168.1.1
+                            nameserver: [ 192.168.0.10 ]
+                   name: cloudinitdisk
+                   
+   - name: Login to OpenShift
+     shell: oc login --server={{ clusterendpoint }} -u {{ username }} -p {{ password }} --insecure-skip-tls-verify
+      
+   - name: Create Virtual Machine in OpenShift
+     shell: oc create -f ~/test-vm.yaml
+       
+   - name: Sleep for Virtual Machine Spin Up
+     shell: sleep 100
+       
+   - name: Get Virtual Machine IP
+     shell: oc get vmi -A|grep test | awk '{ print $5 }'
+     register: ipaddress
+       
+   - set_fact: 
+       ipaddress={{ ipaddress.stdout }}
+        
+   - name: Print Virtual Machine IP
+     debug:
+       msg: "VM IPaddress: {{ ipaddress }}"
+       
+   - name: find the id of {{ controller_inventory }}
+     ansible.builtin.uri:
+       url: "{{ controller_url }}/inventories?name={{ controller_inventory | regex_replace(' ', '%20') }}"
+     register: controller_inventory_lookup
+     
+   - name: set inventory id fact
+     ansible.builtin.set_fact:
+       controller_inventory_id: "{{ controller_inventory_lookup.json.results[0].id }}"
+       
+   - name: create host in inventory {{ controller_inventory }}
+     ansible.builtin.uri:
+       url: "{{ controller_url }}/inventories/{{ controller_inventory_id }}/hosts/"
+       method: POST
+       body_format: json
+       body:
+         name: "edge-{{ ipaddress | replace(':','') }}"
+         variables:
+           'ansible_host: {{ ipaddress }}'
+     register: create_host
+     changed_when:
+       - create_host.status | int == 201
+     failed_when:
+       - create_host.status | int != 201
+       - "'already exists' not in create_host.content"
+       
+   - name: find the id of {{ provisioning_template }}
+     ansible.builtin.uri:
+       url: "{{ controller_url }}/workflow_job_templates?name={{ provisioning_template | regex_replace(' ', '%20') }}"
+     register: job_template_lookup
+     
+   - name: set the id of {{ provisioning_template }}
+     ansible.builtin.set_fact:
+       job_template_id: "{{ job_template_lookup.json.results[0].id }}"
+       
+   - name: Let Controller Catch Up
+     shell: sleep 60
+       
+   - name: trigger {{ provisioning_template }}
+     ansible.builtin.uri:
+       url: "{{ controller_url }}/workflow_job_templates/{{ job_template_id }}/launch/"
+       method: POST
+       status_code:
+         - 201
+       body_format: json
+       body:
+         limit: "edge-{{ ipaddress | replace(':','') }}"
+      

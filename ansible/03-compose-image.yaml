@@ -1,0 +1,148 @@
+---
+ - hosts: all
+   tasks:
+   - name: Creating MicroShift Toml file
+     copy:
+       dest: "{{ microshift_local }}/rhde-microshift.toml"
+       content: |
+         name = "rhde-microshift"
+         description = "RHDE Microshift Image"
+         version = "1.0.0"
+         modules = []
+         groups = []
+         [[packages]]
+         name = "microshift"
+         version = "*"
+         [[packages]]
+         name = "openshift-clients"
+         version = "*"
+         [[packages]]
+         name = "git"
+         version = "*"
+         [[packages]]
+         name = "iputils"
+         version = "*"
+         [[packages]]
+         name = "bind-utils"
+         version = "*"
+         [[packages]]
+         name = "net-tools"
+         version = "*"
+         [[packages]]
+         name = "iotop"
+         version = "*"
+         [[packages]]
+         name = "redhat-release"
+         version = "*"
+         [[packages]]
+         name = "aide"
+         version = "*"
+         [[packages]]
+         name = "authselect"
+         version = "*"
+         [[packages]]
+         name = "fapolicyd"
+         version = "*"
+         [[packages]]
+         name = "gnutls-utils"
+         version = "*"
+         [[packages]]
+         name = "libreswan"
+         version = "*"
+         [[packages]]
+         name = "opensc"
+         version = "*"
+         [[packages]]
+         name = "postfix"
+         version = "*"
+         [[packages]]
+         name = "rng-tools"
+         version = "*"
+         [[packages]]
+         name = "rsyslog"
+         version = "*"
+         [[packages]]
+         name = "rsyslog-gnutls"
+         version = "*"
+         [[packages]]
+         name = "scap-security-guide"
+         version = "*"
+         [customizations]
+         [customizations.services]
+         enabled = ["microshift"]
+     become: true
+              
+   - name: Push blueprint to composer
+     shell: composer-cli blueprints push "{{ microshift_local }}"/rhde-microshift.toml
+     become: true
+
+   - name: Start compose of blueprint image
+     shell: composer-cli compose start-ostree rhde-microshift rhel-edge-container| cut -f2 -d" "
+     register: compose_uuid
+     become: true
+     
+   - set_fact: 
+       compose_uuid={{ compose_uuid.stdout }}
+     
+   - name: Print UUID
+     debug:
+       msg: "UUID: {{ compose_uuid }}"
+     
+   - name: Check for compose to be completed
+     shell: composer-cli compose status | grep "{{ compose_uuid }}" | cut -f2 -d" "
+     register: result
+     become: true
+     
+   - set_fact: 
+       result={{ result.stdout }}
+     
+   - name: Print result
+     debug:
+       msg: "UUID: {{ result }}"
+     
+   - name: Check for compose to be completed
+     shell: composer-cli compose status | grep "{{ compose_uuid }}" | cut -f2 -d" "
+     register: result
+     until: '"FINISHED" in result.stdout'
+     retries: 24
+     delay: 300
+     become: true
+     
+   - name: Create ostree framework directory
+     ansible.builtin.file:
+       path: "{{ microshift_local }}/generate-iso/ostree"
+       state: directory
+       mode: '0755'
+     become: true
+     
+   - name: Download composed image tar file
+     shell: composer-cli compose image "{{ compose_uuid }}"
+     register: compose_image
+     become: true
+
+   - set_fact: 
+       compose_image={{ compose_image.stdout }}
+     
+   - name: Skopeo copy the compose archive into local containers store
+     shell: skopeo copy oci-archive:"{{ compose_image }}" containers-storage:localhost/rhde-microshift:latest
+     become: true
+     
+   - name: Run rhde-microshift container
+     containers.podman.podman_container:
+       name: rhde-microshift
+       image: localhost/rhde-microshift:latest
+       state: started
+       ports:
+           - "8000:8080"
+     become: true
+           
+   - name: Copy image contents from rhde-container to local filesystem
+     shell: podman cp rhde-microshift:/usr/share/nginx/html/repo "{{ microshift_local }}/generate-iso/ostree"
+     become: true 
+
+   - name: Stop rhde-microshift container
+     containers.podman.podman_container:
+       name: rhde-microshift
+       state: stopped    
+     become: true
+     

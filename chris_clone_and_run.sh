@@ -17,4 +17,4 @@ git clone "$GIT_REPO_URL" "$CLONE_DIR"
 cd "$CLONE_DIR"
 
 # Execute the shell script
-./"$SCRIPT_NAME"
+./"$SCRIPT_NAME" up

@@ -1,18 +1,22 @@
-name: Ansible Playbook
+name: Ansible Pipeline
 
 on:
   push:
     branches:
-      - main  # Adjust this to your default branch if it's not "main"
+      - main  # Change this to the branch you want to trigger the pipeline on
 
 jobs:
-  ansible:
+  ansible_job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get -y install ansible
+
       - name: Run Ansible playbook
-        run: |
-          docker run --rm -v "$(pwd)/ChRIS-in-a-box:/ansible" -w /ansible ansible/ansible-runner:latest ansible-playbook podman/chri_play.yml -e arg="up"
+        env:
+          ANSIBLE_ROLES_PATH: /path/to/your/ansible/roles  # Replace this with your roles path if needed
+        run: ansible-playbook /path/to/chris_play.yml -e arg="up"

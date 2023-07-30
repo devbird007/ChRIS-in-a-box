@@ -36,7 +36,31 @@ ostreesetup --nogpg --url={{ rfe_tarball_url }}/repo/ --osname=rhel --remote=edg
 #stage updates as they become available. This is highly recommended
 echo AutomaticUpdatePolicy=stage >> /etc/rpm-ostreed.conf
 
-cat > /etc/systemd/system/chrisinabox.service << 'EOF'
+
+cat > /usr/local/bin/startchris.sh << PODMANSCRIPT
+#!/bin/bash
+
+# Git repository for Chris
+GIT_REPO_URL="https://github.com/FNNDSC/ChRIS-in-a-box.git"
+
+# Replace with the desired directory where the repository will be cloned
+CLONE_DIR="podman"
+
+# Replace with the name of the shell script to execute
+SCRIPT_NAME="minichris.sh"
+
+# Clone the Git repository
+git clone "$GIT_REPO_URL" "$CLONE_DIR"
+
+# Navigate to the cloned repository directory
+cd "$CLONE_DIR"
+
+chmod 755 /usr/local/bin/minichris.sh
+
+# Execute the shell script
+./"$SCRIPT_NAME" up
+
+cat > /etc/systemd/system/chris.service << 'EOF'
 
 [Unit]
 Description=Deploy Chris in a box using Podman
@@ -45,15 +69,12 @@ After=network.target
 [Service]
 Type=simple
 User=admin    # Replace with the desired user who should run the service
-ExecStart=/path/to/chris_clone_and_run.sh
-WorkingDirectory=/path/to/clone/dir   # Replace with the same directory used in the shell script
+
+ExecStart=/bin/bash /usr/local/bin/minichris.sh
 
 [Install]
 WantedBy=multi-user.target
 
-
-
 systemctl enable chrisinabox.service
-
 
 %end

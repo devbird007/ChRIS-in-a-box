@@ -1,5 +1,5 @@
 name = "chris-in-a-box"
-description = "https://github.com/FNNDSC/ChRIS-in-a-box"
+description = "This is a Blueprint for running Chris on Edge"
 version = "0.0.1"
 modules = []
 groups = []

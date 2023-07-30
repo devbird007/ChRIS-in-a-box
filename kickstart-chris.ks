@@ -39,6 +39,7 @@ echo AutomaticUpdatePolicy=stage >> /etc/rpm-ostreed.conf
 
 cat > /usr/local/bin/startchris.sh << PODMANSCRIPT
 #!/bin/bash
+echo "This next few steps of ths script will clone the git repo for chris in a box and set few environment variables"
 
 # Git repository for Chris
 GIT_REPO_URL="https://github.com/FNNDSC/ChRIS-in-a-box.git"
@@ -55,10 +56,16 @@ git clone "$GIT_REPO_URL" "$CLONE_DIR"
 # Navigate to the cloned repository directory
 cd "$CLONE_DIR"
 
-chmod 755 /usr/local/bin/minichris.sh
+#commands to start your podman pods in the order
+
+echo "We will be running script to create the pods for Chris in a box using Podman using the script below "
 
 # Execute the shell script
 ./"$SCRIPT_NAME" up
+
+PODMANSCRIPT
+
+chmod 755 /usr/local/bin/startchris.sh
 
 cat > /etc/systemd/system/chris.service << 'EOF'
 
@@ -70,11 +77,11 @@ After=network.target
 Type=simple
 User=admin    # Replace with the desired user who should run the service
 
-ExecStart=/bin/bash /usr/local/bin/startchris.sh.sh
+ExecStart=/bin/bash /usr/local/bin/startchris.sh
 
 [Install]
 WantedBy=multi-user.target
 
-systemctl enable chrisinabox.service
+systemctl enable chris.service
 
 %end

@@ -1,0 +1,46 @@
+name = "chris-in-a-box"
+description = "https://github.com/FNNDSC/ChRIS-in-a-box"
+version = "0.0.1"
+modules = []
+groups = []
+distro = ""
+
+[[packages]]
+name = "pcp"
+version = "*"
+
+[[packages]]
+name = "pcp-zeroconf"
+version = "*"
+
+[[packages]]
+name = "curl"
+version = "*"
+
+[[packages]]
+name = "vim-minimal"
+version = "*"
+
+[[packages]]
+name = "podman"
+version = "*"
+
+[[packages]]
+name = "slirp4netns"
+version = "*"
+
+[[packages]]
+name = "redis"
+version = "*"
+
+[[packages]]
+name = "git"
+version = "*"
+
+[customizations]
+
+[[customizations.user]]
+name = "chris-admin"
+description = "admin"
+password = "password"
+key = "PUBLIC_KEY"

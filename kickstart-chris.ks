@@ -60,8 +60,8 @@ cd "$CLONE_DIR"
 
 echo "We will be running script to create the pods for Chris in a box using Podman using the script below "
 
-# Execute the shell script
-./"$SCRIPT_NAME" up
+# Execute the shell script that will bring chris up
+./podman/"$SCRIPT_NAME" up
 
 PODMANSCRIPT
 

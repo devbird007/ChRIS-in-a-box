@@ -14,10 +14,24 @@
         name: podman.service
         state: started
         scope: user
+    
+    - name: Get the user ID
+      shell: "id -u"
+      register: user_id
+
+    - name: Set the hard_coded_sock variable
+      set_fact:
+        hard_coded_sock: "/run/user/{{ user_id.stdout }}/podman/podman.sock"
 
     - name: Run the command to register the SOCK variable
-      command: '{% raw %}podman info --format {{.Host.RemoteSocket.Path}}{% endraw %}'
+      command: 'podman info --format {{"{{"}}.Host.RemoteSocket.Path{{"}}"}}'
       register: SOCK
+
+
+
+    - name: Debug SOCK variable
+      debug:
+        var: SOCK
 
     # This is for minichris.sh up
     - name: Start up ChRIS

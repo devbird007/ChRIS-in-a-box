@@ -4,8 +4,6 @@ WantedBy=default.target
 [Unit]
 Requires=db.service
 After=db.service
-Requires=swift.service
-After=swift.service
 Requires=rabbitmq.service
 After=rabbitmq.service
 Requires=cube.service
@@ -13,4 +11,11 @@ After=cube.service
 
 [Kube]
 # Point to the yaml file in the same directory
-Yaml=chrisui.yml
+Yaml=cube.yml
+
+# Use the Chris network
+Network=chris.network
+
+# Use the config maps minichris-cube-config, minichris-db-config, minichris-docker-swift-onlyone-config   in the same directory
+ConfigMap=cube-config.yml
+ConfigMap=db-config.yml

@@ -4,8 +4,6 @@ WantedBy=default.target
 [Unit]
 Requires=db.service
 After=db.service
-Requires=swift.service
-After=swift.service
 Requires=rabbitmq.service
 After=rabbitmq.service
 
@@ -17,6 +15,4 @@ Yaml=cube.yml
 Network=chris.network
 
 # Use the config maps minichris-cube-config, minichris-db-config, minichris-docker-swift-onlyone-config   in the same directory
-ConfigMap=minichris-cube-config.yml
-ConfigMap=minichris-db-config.yml
-ConfigMap=minichris-podman-swift-onlyone-config.yml
+ConfigMap=cube-config.yml

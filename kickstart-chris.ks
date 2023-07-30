@@ -70,7 +70,7 @@ After=network.target
 Type=simple
 User=admin    # Replace with the desired user who should run the service
 
-ExecStart=/bin/bash /usr/local/bin/minichris.sh
+ExecStart=/bin/bash /usr/local/bin/startchris.sh.sh
 
 [Install]
 WantedBy=multi-user.target

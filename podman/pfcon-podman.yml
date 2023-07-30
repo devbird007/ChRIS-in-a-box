@@ -77,7 +77,7 @@ spec:
             # This means that the Podman system service must be running, and the socket's path
             # must be known.
             # The hard-coded path below is replaced with the user-specific value by minichris.sh
-            path: /run/user/1000/podman/podman.sock
+            path: /run/user/4205012/podman/podman.sock
             type: Socket
 
 

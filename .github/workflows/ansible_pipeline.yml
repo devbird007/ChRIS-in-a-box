@@ -18,18 +18,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ansible
 
-      - name: Set up Python for Ansible
-        run: |
-          sudo apt-get install -y python3-pip
-          sudo pip3 install --upgrade setuptools
-          sudo pip3 install ansible
-
       - name: Run Ansible playbook
-        uses: ansible/ansible-runner-action@v1
+        uses: mshahat/ansible-playbook@v1
         with:
           playbook: ChRIS-in-a-box/podman/chri_play.yml
-        env:
-          ANSIBLE_STDOUT_CALLBACK: "default"
-          ANSIBLE_DISPLAY_OK_HOSTS: "false"
-          ANSIBLE_NOCOLOR: "true"
-        # Add any other environment variables you might need for the playbook
+          inventory: localhost,
+          extra_vars: '{"arg": "up"}'

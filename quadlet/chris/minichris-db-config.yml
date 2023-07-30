@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: db-config
+  name: minichris-db-config
   labels:
     app.kubernetes.io/part-of: miniChRIS
   annotations:

@@ -1,0 +1,74 @@
+---
+- name: Run ChRIS application with ansible-playbook
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    CUBE_POD: minichris-cube-pod
+    HERE: "{{ playbook_dir }}"
+    hard_coded_sock: '/run/user/1000/podman/podman.sock'
+    arg: "{{ extra_vars['arg'] }}"
+
+  tasks:
+    - name: Start up podman.service
+      ansible.builtin.systemd:
+        name: podman.service
+        state: started
+        scope: user
+
+    - name: Run the command to register the SOCK variable
+      command: '{% raw %}podman info --format {{.Host.RemoteSocket.Path}}{% endraw %}'
+      register: SOCK
+
+    # This is for minichris.sh up
+    - name: Start up ChRIS
+      block:
+        - name: Start cube
+          shell: "cat {{ HERE }}/kube/*.yml | podman kube play --replace -"
+          ignore_errors: yes
+
+        - name: Start up pfcon
+          block:
+            - name: Replacing SOCK with hard_coded_sock
+              ansible.builtin.replace:
+                path: "{{ HERE }}/pfcon-podman.yml"
+                regexp: "{{ SOCK.stdout }}"
+                replace: "{{ hard_coded_sock }}"
+
+            - name: Run the file with podman kube play
+              containers.podman.podman_play:
+                kube_file: "{{ HERE }}/pfcon-podman.yml"
+                recreate: true
+                state: started
+
+        - name: Start up chrisomatic
+          containers.podman.podman_container:            
+            name: chrisomatic-container
+            rm: true
+            tty: true                   
+            pod: "{{ CUBE_POD }}"
+            security_opt: "label=disable"
+            volume:
+              - "{{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro"
+              - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
+            image: ghcr.io/fnndsc/chrisomatic:0.4.1
+            command: chrisomatic "{{ arg }}"       
+      when: arg == "up"
+
+    # This is for minichris.sh down
+    - name: Stop ChRIS
+      shell: "cat {{ HERE }}/kube/*.yml {{ HERE }}/pfcon-podman.yml | exec podman kube down --force -"      
+      when: arg == "down"
+
+    # This is for minichris.sh chrisomatic
+    - name: Run chrisomatic
+      containers.podman.podman_container:
+        name: chrisomatic-container
+        rm: true
+        pod: "{{ CUBE_POD }}"
+        security_opt: "label=disable"
+        volume:
+          - "{{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro"
+          - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
+        image: ghcr.io/fnndsc/chrisomatic:0.4.1
+        command: chrisomatic "{{ arg }}" 
+      when: arg == "chrisomatic"     

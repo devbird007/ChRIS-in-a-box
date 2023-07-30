@@ -17,6 +17,4 @@ jobs:
         run: sudo apt-get update && sudo apt-get -y install ansible
 
       - name: Run Ansible playbook
-        env:
-          ANSIBLE_ROLES_PATH: /path/to/your/ansible/roles  # Replace this with your roles path if needed
-        run: ansible-playbook /path/to/chris_play.yml -e arg="up"
+        run: ansible-playbook ./podman/chris_play.yml -e arg="up"

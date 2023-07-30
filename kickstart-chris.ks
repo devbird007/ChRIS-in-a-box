@@ -45,7 +45,7 @@ After=network.target
 [Service]
 Type=simple
 User=admin    # Replace with the desired user who should run the service
-ExecStart=/path/to/git_clone_and_run.sh
+ExecStart=/path/to/chris_clone_and_run.sh
 WorkingDirectory=/path/to/clone/dir   # Replace with the same directory used in the shell script
 
 [Install]

@@ -5,7 +5,7 @@
   vars:
     CUBE_POD: minichris-cube-pod
     HERE: "{{ playbook_dir }}"
-    hard_coded_sock: '/run/user/1000/podman/podman.sock'
+    HARD_CODED_SOCK: '/run/user/1000/podman/podman.sock'
     arg: "{{ extra_vars['arg'] }}"
 
   tasks:
@@ -28,11 +28,11 @@
 
         - name: Start up pfcon
           block:
-            - name: Replacing SOCK with hard_coded_sock
+            - name: Replacing HARD_CODED_SOCK with the SOCK value
               ansible.builtin.replace:
                 path: "{{ HERE }}/pfcon-podman.yml"
-                regexp: "{{ SOCK.stdout }}"
-                replace: "{{ hard_coded_sock }}"
+                regexp: "{{ HARD_CODED_SOCK }}"
+                replace: "{{ SOCK.stdout }}"
 
             - name: Run the file with podman kube play
               containers.podman.podman_play:

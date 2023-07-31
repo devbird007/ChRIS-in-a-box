@@ -5,7 +5,6 @@
     CUBE_POD: minichris-cube-pod
     HERE: "{{ playbook_dir }}"
     HARD_CODED_SOCK: '/run/user/1000/podman/podman.sock'
-    arg: "{{ extra_vars['arg'] }}"
 
   tasks:
     - name: Start up podman.service
@@ -13,10 +12,12 @@
         name: podman.service
         state: started
         scope: user
+      tags: up
 
     - name: Run the command to register the SOCK variable
       ansible.builtin.command: '{% raw %}podman info --format {{.Host.RemoteSocket.Path}}{% endraw %}'
       register: SOCK
+      tags: [ up, chrisomatic ]
 
     # This is for minichris.sh up
     - name: Start up ChRIS
@@ -39,36 +40,27 @@
                 recreate: true
                 state: started
 
-        - name: Start up chrisomatic
-          containers.podman.podman_container:            
-            name: chrisomatic-container
-            rm: true
-            tty: true                   
-            pod: "{{ CUBE_POD }}"
-            security_opt: "label=disable"
-            volume:
-              - "{{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro"
-              - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
-            image: ghcr.io/fnndsc/chrisomatic:0.4.1
-            command: chrisomatic
-      when: arg == "up"
+        - name: Chrisomatic
+          block:
+            - name: Start up chrisomatic
+              containers.podman.podman_container:            
+                name: chrisomatic-container
+                rm: true
+                pod: "{{ CUBE_POD }}"
+                security_opt: "label=disable"
+                volume:
+                  - "{{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro"
+                  - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
+                image: ghcr.io/fnndsc/chrisomatic:0.4.1
+                command: chrisomatic
+            - name: Ensure the container is removed
+              containers.podman.podman_container:
+                name: chrisomatic-container
+                state: absent
+          tags: chrisomatic
+      tags: up
 
     # This is for minichris.sh down
     - name: Stop ChRIS
       ansible.builtin.shell: "cat {{ HERE }}/kube/*.yml {{ HERE }}/pfcon-podman.yml | exec podman kube down --force -"      
-      when: arg == "down"
-
-    # This is for minichris.sh chrisomatic
-    - name: To run chrisomatic alone
-      containers.podman.podman_container:
-        name: chrisomatic-container
-        rm: true
-        tty: true
-        pod: "{{ CUBE_POD }}"
-        security_opt: "label=disable"
-        volume:
-          - "{{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro"
-          - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
-        image: ghcr.io/fnndsc/chrisomatic:0.4.1
-        command: chrisomatic 
-      when: arg == "chrisomatic"     
+      tags: down

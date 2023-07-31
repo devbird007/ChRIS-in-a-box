@@ -14,7 +14,7 @@ After=cube.service
 Yaml=cube.yml
 
 # Use the Chris network
-#Network=chris.network
+# Network=chris.network
 
 # Use the config maps minichris-cube-config, minichris-db-config, minichris-docker-swift-onlyone-config   in the same directory
 ConfigMap=cube-config.yml

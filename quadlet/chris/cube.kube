@@ -1,6 +1,9 @@
 [Install]
 WantedBy=default.target
 
+[Service]
+TimeoutStartSec=600
+
 [Unit]
 Requires=db.service
 After=db.service

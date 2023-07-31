@@ -47,7 +47,7 @@ jobs:
       - name: Set up Go environment
         uses: actions/setup-go@v2
         with:
-          go-version: 1.18
+          go-version: 1.19
           # Specify any additional Go versions you need
 
       - name: Set GOPATH
@@ -89,7 +89,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.18
+          go-version: 1.19
           
       - name: Build and Test
         run: |

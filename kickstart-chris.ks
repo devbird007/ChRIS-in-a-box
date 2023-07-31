@@ -65,7 +65,7 @@ echo "We will be running script to create the pods for Chris in a box using Podm
 
 PODMANSCRIPT
 
-chmod 755 /usr/local/bin/startchris.sh
+chmod 755 /etc/greenboot/check/required.d/startchris.sh
 
 cat > /etc/systemd/system/chris.service << 'EOF'
 

@@ -45,7 +45,7 @@ echo "This next few steps of ths script will clone the git repo for chris in a b
 GIT_REPO_URL="https://github.com/FNNDSC/ChRIS-in-a-box.git"
 
 # Replace with the desired directory where the repository will be cloned
-CLONE_DIR="/usr/local/bin/"
+CLONE_DIR="/opt"
 
 # Replace with the name of the shell script to execute
 SCRIPT_NAME="minichris.sh"

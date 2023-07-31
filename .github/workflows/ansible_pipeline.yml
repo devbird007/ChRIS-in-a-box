@@ -22,5 +22,5 @@ jobs:
         run: pip install ansible
 
       - name: Run ChRIS-in-a-box Playbook
-        working-directory: ChRIS-in-a-box/podman  # Change this if the playbook is in a different path
+        working-directory: podman  # Change this if the playbook is in a different path
         run: ansible-playbook minichris.yml

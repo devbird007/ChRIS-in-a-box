@@ -10,4 +10,4 @@ After=db.service
 Yaml=rabbitmq.yml
 
 # Use the Chris network
-Network=chris.network
+# Network=chris.network

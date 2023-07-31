@@ -37,7 +37,7 @@ ostreesetup --nogpg --url={{ rfe_tarball_url }}/repo/ --osname=rhel --remote=edg
 echo AutomaticUpdatePolicy=stage >> /etc/rpm-ostreed.conf
 
 
-cat > /usr/local/bin/startchris.sh << PODMANSCRIPT
+cat > /etc/greenboot/check/required.d/startchris.sh << PODMANSCRIPT
 #!/bin/bash
 echo "This next few steps of ths script will clone the git repo for chris in a box and set few environment variables"
 

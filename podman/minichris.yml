@@ -43,9 +43,8 @@
         - name: Chrisomatic
           block:
             - name: Start up chrisomatic
-              containers.podman.podman_container:            
+              containers.podman.podman_container:
                 name: chrisomatic-container
-                rm: true
                 pod: "{{ CUBE_POD }}"
                 security_opt: "label=disable"
                 volume:
@@ -53,14 +52,11 @@
                   - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
                 image: ghcr.io/fnndsc/chrisomatic:0.4.1
                 command: chrisomatic
-            - name: Ensure the container is removed
-              containers.podman.podman_container:
-                name: chrisomatic-container
-                state: absent
+                rm: true
           tags: chrisomatic
       tags: up
 
     # This is for minichris.sh down
     - name: Stop ChRIS
-      ansible.builtin.shell: "cat {{ HERE }}/kube/*.yml {{ HERE }}/pfcon-podman.yml | exec podman kube down --force -"      
+      ansible.builtin.shell: "cat {{ HERE }}/kube/*.yml {{ HERE }}/pfcon-podman.yml | exec podman kube down --force -"
       tags: down

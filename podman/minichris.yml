@@ -43,16 +43,23 @@
         - name: Chrisomatic
           block:
             - name: Start up chrisomatic
-              containers.podman.podman_container:
-                name: chrisomatic-container
-                pod: "{{ CUBE_POD }}"
-                security_opt: "label=disable"
-                volume:
-                  - "{{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro"
-                  - "{{ SOCK.stdout }}:/var/run/docker.sock:rw"
-                image: ghcr.io/fnndsc/chrisomatic:0.4.1
-                command: chrisomatic
-                rm: true
+              command: "podman run --name chrisomatic-container --pod {{ CUBE_POD }} --security-opt label=disable -v {{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro -v {{ SOCK.stdout }}:/var/run/docker.sock:rw ghcr.io/fnndsc/chrisomatic:0.4.1 chrisomatic"
+              ignore_errors: true
+
+            - name: Check container status
+              ansible.builtin.command: podman logs chrisomatic-container
+              register: container_status
+              ignore_errors: true
+
+            - name: Display container status
+              ansible.builtin.debug:
+                msg: "{{ container_status.stdout_lines}}"
+              register: result
+              ignore_errors: true
+              when: container_status is success
+
+            - name: End Chrisomatic
+              command: podman rm chrisomatic-container
           tags: chrisomatic
       tags: up
 

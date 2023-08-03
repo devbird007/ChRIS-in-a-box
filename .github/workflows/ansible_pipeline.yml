@@ -121,4 +121,4 @@ jobs:
 
       - name: Run ChRIS-in-a-box Playbook
         working-directory: podman  # Change this if the playbook is in a different path
-        run: ansible-playbook minichris.yml --extra-vars "arg=up"
+        run: ansible-playbook minichris.yml --tags up

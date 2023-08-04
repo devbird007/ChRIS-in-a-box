@@ -5,6 +5,7 @@
     CUBE_POD: minichris-cube-pod
     HERE: "{{ playbook_dir }}"
     HARD_CODED_SOCK: '/run/user/1000/podman/podman.sock'
+    CHRISOMATIC_IMAGE: ghcr.io/fnndsc/chrisomatic:0.4.1
 
   tasks:
     - name: Start podman.service
@@ -24,7 +25,7 @@
       - ghcr.io/fnndsc/chris_ui:20230523.257-cbc71ea8
       - ghcr.io/fnndsc/pfcon:5.0.0
       - ghcr.io/fnndsc/pman:5.0.0.a5
-      - ghcr.io/fnndsc/chrisomatic:0.4.1
+      - "{{ CHRISOMATIC_IMAGE }}"
       tags: up
 
     - name: Register the SOCK variable
@@ -52,7 +53,7 @@
         - name: Start up Chrisomatic
           block:
             - name: Start chrisomatic
-              command: "podman run --name chrisomatic-container --pod {{ CUBE_POD }} --security-opt label=disable -v {{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro -v {{ SOCK.stdout }}:/var/run/docker.sock:rw ghcr.io/fnndsc/chrisomatic:0.4.1 chrisomatic"
+              command: "podman run --name chrisomatic-container --pod {{ CUBE_POD }} --security-opt label=disable -v {{ HERE }}/chrisomatic.yml:/chrisomatic.yml:ro -v {{ SOCK.stdout }}:/var/run/docker.sock:rw {{ CHRISOMATIC_IMAGE }} chrisomatic"
               ignore_errors: true
 
             - name: Check chrisomatic-container status

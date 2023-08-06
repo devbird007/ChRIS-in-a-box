@@ -8,14 +8,61 @@
     CHRISOMATIC_IMAGE: ghcr.io/fnndsc/chrisomatic:0.4.1
 
   tasks:
-    - name: Start podman.service
+    - name: Create and Enable Podman Socket If Not Present
+      block:
+        - name: Determine the xdg_runtime_dir             # This is necessary for finding the podman.sock location on the host
+          block:
+            - name: Get the uid of the current user
+              command: "id -u {{ ansible_user_id }}"      # This command returns the user's id number that may usually be 1000
+              register: user_id_number
+            
+            - name: Set the xdg_runtime_dir variable
+              set_fact:
+                xdg_runtime_dir: "/run/user/{{ user_id_number.stdout }}"
+              changed_when: false
+
+        - name: Check if podman socket exists
+          ansible.builtin.stat:
+            path: "{{ xdg_runtime_dir}}/podman/podman.sock"
+          register: podman_socket
+
+        - name: Create podman socket file if not exists
+          ansible.builtin.copy:
+            content: |
+              [Unit]
+              Description=Podman API Socket
+              Documentation=man:podman-system-service(1)
+
+              [Socket]
+              ListenStream=%t/podman/podman.sock
+              SocketMode=0660
+
+              [Install]
+              WantedBy=sockets.target
+            dest: /usr/lib/systemd/user/podman.socket
+          when: podman_socket.stat.exists == false
+
+        - name: Enable and start the podman socket
+          environment:
+            XDG_RUNTIME_DIR: "{{ xdg_runtime_dir }}"
+          ansible.builtin.systemd:
+            name: podman.socket
+            enabled: true
+            state: started
+            scope: user
+            daemon_reload: true
+      tags: up
+
+
+    - name: Start Podman Service
       ansible.builtin.systemd:
         name: podman.service
         state: started
         scope: user
+        daemon_reload: true
       tags: up
 
-    - name: Pull all required images
+    - name: Pull All Required Images
       containers.podman.podman_image:
         name: "{{ item }}"
       loop:
@@ -28,13 +75,13 @@
       - "{{ CHRISOMATIC_IMAGE }}"
       tags: up
 
-    - name: Register the SOCK variable
+    - name: Register The SOCK Variable
       ansible.builtin.command: '{% raw %}podman info --format {{.Host.RemoteSocket.Path}}{% endraw %}'
       register: SOCK
       tags: [ up, chrisomatic ]
 
     # This is for minichris.sh up
-    - name: Start up ChRIS
+    - name: Start Up ChRIS
       block:
         - name: Start cube
           ansible.builtin.shell: "cat {{ HERE }}/kube/*.yml | podman kube play --replace -"

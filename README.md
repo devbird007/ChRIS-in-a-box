@@ -30,6 +30,11 @@ Image tags are pinned to stable versions, so _chris in a box_ may be out-of-date
 _ChRIS in a box_ requires Podman version 4.3 or above.
 We aim to support "out-of-the-box" setups of rootless Podman (using slirp4netns).
 
+```storage: ~500GB
+   processor: x4 cores
+   RAM: 16GB
+```
+
 Supported OS: Fedora Silverblue 37, Ubuntu 22.04, Arch Linux
 
 <details>

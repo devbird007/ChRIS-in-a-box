@@ -31,9 +31,9 @@ _ChRIS in a box_ requires Podman version 4.3 or above.
 We aim to support "out-of-the-box" setups of rootless Podman (using slirp4netns).
 
 ```
-   processor: x4 cores
+   CPU: x4 cores
    RAM: 16GB
-   storage: ~500GB
+   Storage: ~500GB
 ```
 
 Supported OS: Fedora Silverblue 37, Ubuntu 22.04, Arch Linux

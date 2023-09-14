@@ -1,6 +1,7 @@
 # Description
 # ![ChRIS logo](https://raw.githubusercontent.com/FNNDSC/ChRIS_ultron_backEnd/master/docs/assets/logo_chris.png) ChRIS in a box
 
+
 With a build once, run anywhere approach, ChRIS in a Box allows the ability to access and use ChRIS on Edge Computing Devices that are deployed in facilities who would like to leverage the capabilities of ChRIS. 
 
 [![MIT license](https://img.shields.io/github/license/FNNDSC/chris-in-a-box)](LICENSE)
@@ -19,8 +20,6 @@ _ChRIS in a box_ runs applications in "production mode" (where applicable)
 To use a specific backend service please refer to the project source repositories instead, e.g. https://github.com/FNNDSC/ChRIS_ultron_backEnd
 
 Image tags are pinned to stable versions, so _chris in a box_ may be out-of-date with development versions of _ChRIS_ components.
-
-
 
 
 ## Prerequisties
@@ -75,7 +74,6 @@ running anything which might interfere with _miniChRIS_.
 
 
 ## Podman Desktop - Install ChRIS
-
 ![Screenshot from 2023-07-30 00-07-16](https://github.com/FNNDSC/ChRIS-in-a-box/assets/93591339/b16e81eb-3bca-4528-a021-4dc749abfc50)
 
 ![Screenshot from 2023-07-30 00-09-56](https://github.com/FNNDSC/ChRIS-in-a-box/assets/93591339/13152eb7-e486-4c65-bb44-14568b79c5c8)
@@ -87,11 +85,9 @@ running anything which might interfere with _miniChRIS_.
 
 
 ## Podman Desktop - UnInstall ChRIS
-
 This is a work in progress
 
 ## Application Startup & Performance
-
 On a fast computer with good internet speed, running `./podman/minichris.sh up`
 for the first time (pulls images) takes about 1.5 to 2 minutes.
 Subsequent runs will be faster, about 40 seconds.
@@ -168,7 +164,6 @@ For details, see https://github.com/FNNDSC/chrisomatic#plugins-and-pipelines
 -->
 
 ### Developer's Notes: On Podman
-
 YAML files in `podman/kube` should be interoperable between Podman and Kubernetes.
 Podman supports a subset of the Kubernetes manifest spec:
 Pod, Deployment, PersistentVolumeClaim, ConfigMap
@@ -181,15 +176,14 @@ There is an undocumented behavior of Podman where the host is visible to the con
 via the name `host.containers.internal`, and we're able to talk to pfcon via the bound
 host port.
 
-#### Recommended Reading
 
+#### Recommended Reading
 - https://docs.podman.io/en/stable/markdown/podman-kube-play.1.html#podman-kube-play-support
 - https://github.com/containers/podman/blob/main/docs/tutorials/basic_networking.md
 - https://github.com/FNNDSC/chris-in-a-box/wiki/
 - https://github.com/containers/podman
 - https://www.freedesktop.org/software/systemd/man/systemd.unit.html
-- 
-
+  
 ## Contact
 - Contributors: Raghuram.Banda , Máirín Duffy.
 - Github Issues: https://github.com/FNNDSC/chris-in-a-box/issues
